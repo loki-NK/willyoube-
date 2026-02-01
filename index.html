@@ -5,7 +5,6 @@
   <title>Mohana 💖 Valentine?</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- Confetti -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
   <style>
@@ -29,7 +28,6 @@
       background: radial-gradient(circle at top, #ffe6f2, #ffb3d9);
     }
 
-    /* Cinematic overlay */
     .overlay {
       position: fixed;
       inset: 0;
@@ -67,12 +65,7 @@
 
     p {
       font-size: 18px;
-      margin-bottom: 30px;
-    }
-
-    .buttons {
-      position: relative;
-      height: 100px;
+      margin-bottom: 28px;
     }
 
     button {
@@ -117,55 +110,37 @@
     <h1>Mohana, will you be my Valentine? 💕</h1>
     <p>I promise snacks forever 🍿💖</p>
 
-    <div class="buttons">
-      <button id="yesBtn">YES 💖</button>
-    </div>
+    <button id="yesBtn">YES 💖</button>
 
     <div class="yay" id="yayMessage">YAY! 🎉</div>
   </div>
 
-  <!-- NO Button (runs everywhere) -->
   <button id="noBtn">NO 🙈</button>
-
-  <!-- Romantic Music -->
-  <audio id="loveSong" loop>
-    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_2b3d0f8a45.mp3?filename=romantic-piano-112191.mp3" type="audio/mpeg">
-  </audio>
 
   <script>
     const noBtn = document.getElementById("noBtn");
     const yesBtn = document.getElementById("yesBtn");
     const yayMessage = document.getElementById("yayMessage");
-    const loveSong = document.getElementById("loveSong");
     const overlay = document.getElementById("overlay");
     const card = document.getElementById("card");
 
-    // NO button runs everywhere 😈
-    function moveNoAnywhere() {
-      const padding = 20;
-      const maxX = window.innerWidth - noBtn.offsetWidth - padding;
-      const maxY = window.innerHeight - noBtn.offsetHeight - padding;
-
-      noBtn.style.left = Math.random() * maxX + "px";
-      noBtn.style.top = Math.random() * maxY + "px";
+    function moveNo() {
+      noBtn.style.left =
+        Math.random() * (window.innerWidth - noBtn.offsetWidth) + "px";
+      noBtn.style.top =
+        Math.random() * (window.innerHeight - noBtn.offsetHeight) + "px";
     }
 
-    setInterval(moveNoAnywhere, 700);
-    noBtn.addEventListener("mouseenter", moveNoAnywhere);
-    noBtn.addEventListener("touchstart", moveNoAnywhere);
-
-    function fadeInMusic(audio) {
-      audio.volume = 0;
-      audio.play();
-      let v = 0;
-      const fade = setInterval(() => {
-        v += 0.02;
-        audio.volume = Math.min(v, 1);
-        if (v >= 1) clearInterval(fade);
-      }, 100);
-    }
+    setInterval(moveNo, 600);
+    noBtn.addEventListener("mouseenter", moveNo);
+    noBtn.addEventListener("touchstart", moveNo);
+    moveNo();
 
     yesBtn.addEventListener("click", () => {
+      // REMOVE NO BUTTON COMPLETELY
+      noBtn.remove();
+
+      // Cinematic transition
       document.body.classList.add("cinematic");
       overlay.classList.add("show");
       card.classList.add("cinematic");
@@ -179,11 +154,14 @@
         navigator.vibrate([30, 40, 30, 40, 60]);
       }
 
-      fadeInMusic(loveSong);
+      // 🔥 iOS + Desktop SAFE MUSIC PLAY
+      const music = new Audio(
+        "https://cdn.pixabay.com/audio/2022/03/15/audio_2b3d0f8a45.mp3"
+      );
+      music.loop = true;
+      music.volume = 1;
+      music.play();
     });
-
-    // Initial NO placement
-    moveNoAnywhere();
   </script>
 
 </body>
