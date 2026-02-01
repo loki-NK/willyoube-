@@ -117,12 +117,26 @@
 
   <button id="noBtn">NO 🙈</button>
 
+  <!-- MUST exist in DOM for iOS -->
+  <audio
+    id="loveSong"
+    playsinline
+    preload="auto"
+    loop
+  >
+    <source
+      src="https://cdn.pixabay.com/audio/2022/03/15/audio_2b3d0f8a45.mp3"
+      type="audio/mpeg"
+    />
+  </audio>
+
   <script>
     const noBtn = document.getElementById("noBtn");
     const yesBtn = document.getElementById("yesBtn");
     const yayMessage = document.getElementById("yayMessage");
     const overlay = document.getElementById("overlay");
     const card = document.getElementById("card");
+    const loveSong = document.getElementById("loveSong");
 
     function moveNo() {
       noBtn.style.left =
@@ -137,7 +151,7 @@
     moveNo();
 
     yesBtn.addEventListener("click", () => {
-      // REMOVE NO BUTTON COMPLETELY
+      // Remove NO
       noBtn.remove();
 
       // Cinematic transition
@@ -147,20 +161,24 @@
 
       yayMessage.style.display = "block";
 
-      confetti({ particleCount: 250, spread: 120, origin: { y: 0.6 } });
-      confetti({ particleCount: 180, spread: 160, origin: { y: 0.4 } });
+      // Confetti FALLS + COLLECTS AT BOTTOM
+      confetti({
+        particleCount: 300,
+        angle: 90,
+        spread: 40,
+        origin: { x: 0.5, y: 0 },
+        gravity: 0.9,
+        ticks: 600
+      });
 
       if (navigator.vibrate) {
         navigator.vibrate([30, 40, 30, 40, 60]);
       }
 
-      // 🔥 iOS + Desktop SAFE MUSIC PLAY
-      const music = new Audio(
-        "https://cdn.pixabay.com/audio/2022/03/15/audio_2b3d0f8a45.mp3"
-      );
-      music.loop = true;
-      music.volume = 1;
-      music.play();
+      // iOS-safe music playback
+      loveSong.currentTime = 0;
+      loveSong.volume = 1;
+      loveSong.play();
     });
   </script>
 
