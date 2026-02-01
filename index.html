@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Mohana 💖 Valentine?</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: "Comic Sans MS", "Poppins", cursive;
+    }
+
+    body {
+      margin: 0;
+      height: 100vh;
+      background: linear-gradient(135deg, #ffd6e8, #fff0f6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      transition: background 1.2s ease;
+    }
+
+    body.cinematic {
+      background: radial-gradient(circle at top, #ffe6f2, #ffb3d9);
+    }
+
+    /* Cinematic overlay */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(255, 182, 213, 0.45);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 1.2s ease;
+      z-index: 5;
+    }
+
+    .overlay.show {
+      opacity: 1;
+    }
+
+    .card {
+      background: white;
+      padding: 30px;
+      border-radius: 22px;
+      box-shadow: 0 25px 45px rgba(0,0,0,0.15);
+      text-align: center;
+      max-width: 420px;
+      width: 90%;
+      z-index: 10;
+      transition: transform 1.2s ease, opacity 1.2s ease;
+    }
+
+    .card.cinematic {
+      transform: scale(1.1);
+    }
+
+    h1 {
+      color: #ff4d88;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 18px;
+      margin-bottom: 20px;
+    }
+
+    /* Bears */
+    .bears {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .bears img {
+      width: 120px;
+      border-radius: 16px;
+      animation: bounce 1.8s infinite ease-in-out;
+    }
+
+    .bears img:nth-child(2) {
+      animation-delay: 0.4s;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+
+    .buttons {
+      position: relative;
+      height: 130px;
+    }
+
+    button {
+      font-size: 20px;
+      padding: 12px 26px;
+      border-radius: 14px;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    #yesBtn {
+      background: #ff4d88;
+      color: white;
+    }
+
+    #yesBtn:hover {
+      transform: scale(1.1);
+    }
+
+    #noBtn {
+      background: #ddd;
+      color: #666;
+      position: absolute;
+    }
+
+    .yay {
+      display: none;
+      font-size: 32px;
+      color: #ff4d88;
+      margin-top: 25px;
+      animation: fadeUp 1s ease forwards;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="overlay" id="overlay"></div>
+
+  <div class="card" id="card">
+    <h1>Mohana, will you be my Valentine? 💕</h1>
+    <p>I promise cuddles, snacks, and forever 🥺💖</p>
+
+    <div class="bears">
+      <img src="https://i.imgur.com/MQbZ8YF.png" alt="Bubu Bear" />
+      <img src="https://i.imgur.com/XZ9FQyJ.png" alt="Dudu Bear" />
+    </div>
+
+    <div class="buttons">
+      <button id="yesBtn">YES 💖</button>
+      <button id="noBtn">NO 🙈</button>
+    </div>
+
+    <div class="yay" id="yayMessage">
+      YAY!!! 🎉💖 I LOVE YOU MOHANA!!!
+    </div>
+  </div>
+
+  <!-- Romantic Music -->
+  <audio id="loveSong" loop>
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_2b3d0f8a45.mp3?filename=romantic-piano-112191.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    const noBtn = document.getElementById("noBtn");
+    const yesBtn = document.getElementById("yesBtn");
+    const yayMessage = document.getElementById("yayMessage");
+    const loveSong = document.getElementById("loveSong");
+    const overlay = document.getElementById("overlay");
+    const card = document.getElementById("card");
+
+    function moveNoButton() {
+      const container = document.querySelector(".buttons");
+      const maxX = container.clientWidth - noBtn.offsetWidth;
+      const maxY = container.clientHeight - noBtn.offsetHeight;
+      noBtn.style.left = Math.random() * maxX + "px";
+      noBtn.style.top = Math.random() * maxY + "px";
+    }
+
+    moveNoButton();
+    noBtn.addEventListener("mouseenter", moveNoButton);
+    noBtn.addEventListener("touchstart", moveNoButton);
+
+    function fadeInMusic(audio) {
+      audio.volume = 0;
+      audio.play();
+      let v = 0;
+      const fade = setInterval(() => {
+        v += 0.02;
+        audio.volume = Math.min(v, 1);
+        if (v >= 1) clearInterval(fade);
+      }, 100);
+    }
+
+    yesBtn.addEventListener("click", () => {
+      // Cinematic transition 🎬
+      document.body.classList.add("cinematic");
+      overlay.classList.add("show");
+      card.classList.add("cinematic");
+
+      yayMessage.style.display = "block";
+
+      confetti({ particleCount: 220, spread: 100, origin: { y: 0.6 } });
+      confetti({ particleCount: 180, spread: 140, origin: { y: 0.4 } });
+
+      if (navigator.vibrate) {
+        navigator.vibrate([30, 40, 30, 40, 60]);
+      }
+
+      fadeInMusic(loveSong);
+    });
+  </script>
+
+</body>
+</html>
