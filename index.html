@@ -10,7 +10,16 @@
   <style>
     * {
       box-sizing: border-box;
-      font-family: "Comic Sans MS", "Poppins", cursive;
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "SF Pro Text",
+        "SF Pro Display",
+        "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
+        sans-serif;
     }
 
     body {
@@ -22,6 +31,8 @@
       align-items: center;
       overflow: hidden;
       transition: background 1.2s ease;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
 
     body.cinematic {
@@ -61,11 +72,13 @@
     h1 {
       color: #ff4d88;
       margin-bottom: 12px;
+      font-weight: 600;
     }
 
     p {
       font-size: 18px;
       margin-bottom: 28px;
+      line-height: 1.4;
     }
 
     button {
@@ -93,6 +106,7 @@
       font-size: 36px;
       color: #ff4d88;
       margin-top: 30px;
+      font-weight: 700;
       animation: fadeUp 1s ease forwards;
     }
 
@@ -117,7 +131,7 @@
 
   <button id="noBtn">NO 🙈</button>
 
-  <!-- MUST exist in DOM for iOS -->
+  <!-- iOS-safe audio element -->
   <audio
     id="loveSong"
     playsinline
@@ -151,7 +165,7 @@
     moveNo();
 
     yesBtn.addEventListener("click", () => {
-      // Remove NO
+      // Remove NO button
       noBtn.remove();
 
       // Cinematic transition
@@ -161,7 +175,7 @@
 
       yayMessage.style.display = "block";
 
-      // Confetti FALLS + COLLECTS AT BOTTOM
+      // Confetti falls & collects
       confetti({
         particleCount: 300,
         angle: 90,
@@ -171,13 +185,13 @@
         ticks: 600
       });
 
+      // Haptics
       if (navigator.vibrate) {
         navigator.vibrate([30, 40, 30, 40, 60]);
       }
 
-      // iOS-safe music playback
+      // iOS-safe music
       loveSong.currentTime = 0;
-      loveSong.volume = 1;
       loveSong.play();
     });
   </script>
